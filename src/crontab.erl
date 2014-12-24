@@ -14,29 +14,26 @@
 	, remove/2
         ]).
 
-%%%_* Includes =========================================================
--include_lib("stdlib2/include/prelude.hrl").
-
-%%%_* Code =============================================================
 %%%_ * API -------------------------------------------------------------
+-type error_reason() :: tasks_exists | no_next_found.
 -spec add(Name::atom(), Spec::list(), MFA::mfa()) ->
-             whynot(task_exists | no_next_found).
+             ok | {error, error_reason()}.
 add(Name, Spec, MFA) ->
   add(Name, Spec, MFA, []).
 
 -spec add(Name::atom(), Spec::list(), MFA::mfa(), Options::list()) ->
-             whynot(task_exists | no_next_found).
+             ok | {error, error_reason()}.
 add(Name, Spec, MFA, Options) ->
   case crontab_time:parse_spec(Spec) of
     {ok, PSpec}  -> crontab_server:add(Name, PSpec, MFA, Options);
     {error, Rsn} -> {error, Rsn}
   end.
 
--spec remove(Name::atom()) -> whynot(no_such_task).
+-spec remove(Name::atom()) -> ok | {error, no_such_task}.
 remove(Name) ->
   remove(Name, []).
 
--spec remove(Name::atom(), Options::list()) -> whynot(no_such_task).
+-spec remove(Name::atom(), Options::list()) -> ok | {error, no_such_task}.
 remove(Name, Options) ->
   crontab_server:remove(Name, Options).
 
