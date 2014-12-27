@@ -2,6 +2,7 @@
  [ {description,  "crontab"}
  , {vsn,          git}
  , {registered,   []}
+ , {modules,      []}
  , {applications, [kernel, stdlib]}
  , {mod,          {crontab_app, []}}
  , {env,          []}
